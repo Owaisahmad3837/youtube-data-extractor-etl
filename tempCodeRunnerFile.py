@@ -1,41 +1,55 @@
-import json
-from utils import get_video_id, get_channel_id
-from extract import get_video_data, get_channel_data
-import os
+from extract.channel_extract import extract_channel
+from extract.playlist_extract import extract_playlist
+from extract.videos_extract import extract_videos
 
-os.makedirs("output", exist_ok=True)
-
-# 🎥 INPUT
-video_url = input("Enter YouTube video URL: ")
-channel_url = input("Enter YouTube channel URL: ")
-
-# -----------------------
-# VIDEO FLOW
-# -----------------------
-video_id = get_video_id(video_url)
-
-if video_id:
-    video_data = get_video_data(video_id)
-
-    with open("output/video.json", "w", encoding="utf-8") as f:
-        json.dump(video_data, f, indent=4)
-
-    print("✅ Video data saved!")
-else:
-    print("❌ Invalid video URL")
+from transform.clean import transform
+from load.json_loader import save_json
 
 
-# -----------------------
-# CHANNEL FLOW
-# -----------------------
-channel_id = get_channel_id(channel_url)
+# -----------------------------
+# INPUT
+# -----------------------------
+channel_id = "UC_x5XG1OV2P6uZZ5FSM9Ttw"  # Google Developers
 
-if channel_id:
-    channel_data = get_channel_data(channel_id)
 
-    with open("output/channel.json", "w", encoding="utf-8") as f:
-        json.dump(channel_data, f, indent=4)
+# -----------------------------
+# STEP 1: CHANNEL
+# -----------------------------
+channel = extract_channel(channel_id)
 
-    print("✅ Channel data saved!")
-else:
-    print("❌ Invalid channel URL")
+
+# -----------------------------
+# STEP 2: PLAYLIST
+# -----------------------------
+playlist_id = channel["uploaded_playlist"]
+
+video_ids = extract_playlist(playlist_id, limit=10)
+
+
+# -----------------------------
+# STEP 3: VIDEOS
+# -----------------------------
+videos = extract_videos(video_ids)
+
+
+# -----------------------------
+# BUILD RAW DATA
+# -----------------------------
+raw_data = {
+    "channel": channel,
+    "videos": videos
+}
+
+
+# -----------------------------
+# TRANSFORM
+# -----------------------------
+clean_data = transform(raw_data)
+
+
+# -----------------------------
+# LOAD
+# -----------------------------
+save_json(clean_data)
+
+print("ETL Completed 🚀")

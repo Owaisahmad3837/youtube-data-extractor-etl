@@ -1,0 +1,60 @@
+{
+    "channel": {
+        "title": "Google for Developers",
+        "subscribers": "2660000",
+        "views": "355459820",
+        "uploaded_playlist": "UU_x5XG1OV2P6uZZ5FSM9Ttw"
+    },
+    "videos": [
+        {
+            "title": "Gemma Playground: Parallel Agents in Action",
+            "views": 8308,
+            "likes": "268"
+        },
+        {
+            "title": "What caused this React app to crash?",
+            "views": 5546,
+            "likes": "115"
+        },
+        {
+            "title": "Gemma 4 and the AI Edge Gallery: On-Device AI Gets an Upgrade",
+            "views": 4061,
+            "likes": "157"
+        },
+        {
+            "title": "Gemma Playground: AI Edge Gallery",
+            "views": 24448,
+            "likes": "740"
+        },
+        {
+            "title": "3 takeaways on Software Ecology\u2122\ufe0f",
+            "views": 3316,
+            "likes": "151"
+        },
+        {
+            "title": "When you realize that you\u2019re the senior dev now.",
+            "views": 7619,
+            "likes": "119"
+        },
+        {
+            "title": "POV: A new feature enters the chat. \ud83d\udd7a\u2728",
+            "views": 12284,
+            "likes": "107"
+        },
+        {
+            "title": "Run Gemma on the edge with the Coral Board",
+            "views": 101143,
+            "likes": "3536"
+        },
+        {
+            "title": "In production, which file actually gets loaded?",
+            "views": 4022,
+            "likes": "92"
+        },
+        {
+            "title": "Inspect and live-edit 3D WebGL elements",
+            "views": 16093,
+            "likes": "263"
+        }
+    ]
+}
