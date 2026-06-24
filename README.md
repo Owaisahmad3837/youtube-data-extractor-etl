@@ -30,9 +30,13 @@ Learn the basics of:
 # 🚀 Features
 
 ✅ Extract single YouTube video information
+
 ✅ Extract YouTube channel information
+
 ✅ Convert YouTube URL → Video ID
+
 ✅ Fetch data using `googleapiclient.discovery`
+
 ✅ Save raw API response as JSON files
 
 ---
