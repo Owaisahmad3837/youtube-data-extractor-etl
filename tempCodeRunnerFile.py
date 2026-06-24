@@ -1,55 +1,66 @@
-from extract.channel_extract import extract_channel
-from extract.playlist_extract import extract_playlist
-from extract.videos_extract import extract_videos
+from extract.video_stats import extract_video_stats
+from extract.videos import extract_video
 
-from transform.clean import transform
-from load.json_loader import save_json
+from transform.video_metrics import (
+    calculate_trend_score,
+    calculate_video_metrics
+)
 
-
-# -----------------------------
-# INPUT
-# -----------------------------
-channel_id = "UC_x5XG1OV2P6uZZ5FSM9Ttw"  # Google Developers
-
-
-# -----------------------------
-# STEP 1: CHANNEL
-# -----------------------------
-channel = extract_channel(channel_id)
+from load.database import (
+    create_table,
+    insert_video
+)
 
 
-# -----------------------------
-# STEP 2: PLAYLIST
-# -----------------------------
-playlist_id = channel["uploaded_playlist"]
 
-video_ids = extract_playlist(playlist_id, limit=10)
+def main():
+
+    create_table()
 
 
-# -----------------------------
-# STEP 3: VIDEOS
-# -----------------------------
-videos = extract_videos(video_ids)
+    videos = extract_video("hero")
 
 
-# -----------------------------
-# BUILD RAW DATA
-# -----------------------------
-raw_data = {
-    "channel": channel,
-    "videos": videos
-}
+    print(
+        "video extracted:",
+        len(videos)
+    )
 
 
-# -----------------------------
-# TRANSFORM
-# -----------------------------
-clean_data = transform(raw_data)
+    for video in videos:
+
+        stats=extract_video_stats(
+            video["video_id"]
+        )
+        video.update(stats)
+        # FIRST calculate metrics
+        video = calculate_video_metrics(
+            video
+        )
 
 
-# -----------------------------
-# LOAD
-# -----------------------------
-save_json(clean_data)
+        # SECOND calculate trend
+        video = calculate_trend_score(
+            video
+        )
 
-print("ETL Completed 🚀")
+
+        print(video)
+
+
+        insert_video(
+            video
+        )
+
+
+        print(
+            "Loaded:",
+            video["title"]
+        )
+
+
+
+
+if __name__ == "__main__":
+
+    main()

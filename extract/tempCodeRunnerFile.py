@@ -1,31 +1,51 @@
 from googleapiclient.discovery import build
-from config.config import API_KEY
+import sys
+import os
 
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+
+from config.config import KEY_API
 youtube=build(
   "youtube",
   "v3",
-  developerKey=API_KEY
+  developerKey=KEY_API
 )
 
-def extract_channel(channel_id):
-  response=youtube.channels().list(
-    part="snippet,statistics,contentDetails",    id=channel_id
+def extract_videos(keyword):
+  response=youtube.search().list(
+    part="snippet",
+    q=keyword,
+    type="video",
+    maxResults=10
   ).execute()
- 
-  data=response["items"][0]
 
-  channel_data={
-    "title":
-    data["snippet"]["title"],
 
-    "subscribers":
-    data["statistics"]["subscriberCount"],
+  videos=[]
 
-    "views":
-    data["statistics"]["viewCount"],
+  for item in response["items"]:
 
-    "uploaded_playlist":
-    data["contentDetails"]["relatedPlaylists"]["uploads"]
+    video={
 
-  }
-  return channel_data
+      "video_id":
+      item["id"]["videoId"],
+
+      "title":
+      item["snippet"]["title"],
+
+      "channel_id":
+      item["snippet"]["channelId"],
+
+
+      "channel_title":
+      item["snippet"]["channelTitle"]      
+
+    }
+
+  videos.append(video)
+
+  return videos
+
+
+print(extract_videos("ali"))

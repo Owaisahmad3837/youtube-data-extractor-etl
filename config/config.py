@@ -1,9 +1,8 @@
-import os 
-
+import os
 from dotenv import load_dotenv
-
 load_dotenv()
 
-API_KEY=os.getenv("Key_of_Youtube_API")
+KEY_API=os.getenv("youtube_api_key")
 
-print(API_KEY)
+
+DATABASE_URL=os.getenv("DATABASE_URL")
